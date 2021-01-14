@@ -76,7 +76,7 @@ def sequence_checker(short_sequences_df, long_sequences_df, merged_sequences_df)
                     duplicate_found = True
                     break
             if not FORWARDS_ONLY:
-                if sequences_match(row['sequence'], sequence, "reverse"):
+                if sequences_match(row['sequence'], sequence, True):
                     duplicate_found = True
                     break
 
@@ -87,11 +87,11 @@ def sequence_checker(short_sequences_df, long_sequences_df, merged_sequences_df)
     return merged_sequences_df
 
 
-def sequences_match(shorter, longer, order=""):
+def sequences_match(shorter, longer, reverse=False):
     '''
     bla
     '''
-    if order == "reverse":
+    if reverse:
         shorter = shorter[::-1]
         longer = longer[::-1]
 
