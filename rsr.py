@@ -1,7 +1,7 @@
 '''
 Copyright (c) 2021, Štěpán Beneš
 
-
+View README for instructions.
 '''
 import sys
 import getopt
@@ -18,7 +18,9 @@ BACKWARDS_ONLY = False
 
 def parse_arguments():
     '''
-    bla
+    Simple argument parser. The selected argument values are kept as globals
+    since it's much more appropriate than passing them around to the functions.
+    Given arguments are also checked for any errors.
     '''
     global SHORT_S_FILE
     global LONG_S_FILE
@@ -61,7 +63,9 @@ def parse_arguments():
 
 def create_dataframes():
     '''
-    bla
+    Creates Pandas dataframes from the provided .csv files. The dataframe for
+    merged sequences begins as a deep copy of the long sequences' dataframe.
+    All three are returned to the caller.
     '''
     short_sequences_df = pd.read_csv(SHORT_S_FILE)
     long_sequences_df = pd.read_csv(LONG_S_FILE)
@@ -71,7 +75,10 @@ def create_dataframes():
 
 def sequence_checker(short_sequences_df, long_sequences_df, merged_sequences_df):
     '''
-    bla
+    Each sequence from the short_sequences dataframe is compared with all of the
+    sequences from the long_sequences dataframe. If no match is found, the short
+    sequence is added to the merged dataframe, along with its additional info.
+    Note that appended short sequences contain the prefix 's_' in the merged file.
     '''
     long_sequences = long_sequences_df['sequence'].tolist()
 
@@ -97,7 +104,11 @@ def sequence_checker(short_sequences_df, long_sequences_df, merged_sequences_df)
 
 def sequences_match(shorter, longer, reverse=False):
     '''
-    bla
+    Compares the given sequences letter by letter. If the whole shorter sequence
+    is not a part of the longer one, False is returned. The argument 'reverse'
+    controls, whether the comparison of the two sequences should start from
+    the front or from the back. Note that the sequences are only checked from
+    the start or from the end, substrings lying in the middle are not a concern.
     '''
     if reverse:
         shorter = shorter[::-1]
@@ -111,14 +122,11 @@ def sequences_match(shorter, longer, reverse=False):
 
 def save_merged_sequences(merged_sequences_df):
     '''
-    bla
+    Saves the finalized merged dataframe to specified or default output file.
     '''
     merged_sequences_df.to_csv(MERGED_S_FILE, index=False)
 
 
 if __name__ == "__main__":
-    '''
-    bla
-    '''
     parse_arguments()
     save_merged_sequences(sequence_checker(*create_dataframes()))
