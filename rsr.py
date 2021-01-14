@@ -5,6 +5,7 @@ Copyright (c) 2021, Štěpán Beneš
 '''
 import sys
 import getopt
+import os
 import pandas as pd
 
 # Global options
@@ -51,6 +52,10 @@ def parse_arguments():
 
     if SHORT_S_FILE == "" or LONG_S_FILE == "":
         print("You need to specify both of the input files.")
+        sys.exit(2)
+
+    if not os.path.isfile(SHORT_S_FILE) or not os.path.isfile(LONG_S_FILE):
+        print("Specified files are invalid.")
         sys.exit(2)
 
 
