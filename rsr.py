@@ -3,9 +3,9 @@ Copyright (c) 2021, Štěpán Beneš
 
 
 '''
-import pandas as pd
 import sys
 import getopt
+import pandas as pd
 
 # Global options
 SHORT_S_FILE = ""
@@ -48,17 +48,20 @@ def parse_arguments():
               + "the sequences in both forwards and backwards manner, simply do not "
               + "specify any parameter.")
         sys.exit(2)
-    return
+
+    if SHORT_S_FILE == "" or LONG_S_FILE == "":
+        print("You need to specify both of the input files.")
+        sys.exit(2)
 
 
 def create_dataframes():
     '''
     bla
     '''
-    short_sequences = pd.read_csv(SHORT_S_FILE)
-    long_sequences = pd.read_csv(LONG_S_FILE)
-    merged_sequences = long_sequences.copy(deep=True)
-    return short_sequences, long_sequences, merged_sequences
+    short_sequences_df = pd.read_csv(SHORT_S_FILE)
+    long_sequences_df = pd.read_csv(LONG_S_FILE)
+    merged_sequences_df = long_sequences_df.copy(deep=True)
+    return short_sequences_df, long_sequences_df, merged_sequences_df
 
 
 def sequence_checker(short_sequences_df, long_sequences_df, merged_sequences_df):
@@ -67,7 +70,7 @@ def sequence_checker(short_sequences_df, long_sequences_df, merged_sequences_df)
     '''
     long_sequences = long_sequences_df['sequence'].tolist()
 
-    for idx, row in short_sequences_df.iterrows():
+    for _, row in short_sequences_df.iterrows():
         duplicate_found = False
 
         for sequence in long_sequences:
@@ -95,7 +98,7 @@ def sequences_match(shorter, longer, reverse=False):
         shorter = shorter[::-1]
         longer = longer[::-1]
 
-    for a,b in zip(shorter, longer):
+    for a, b in zip(shorter, longer):
         if a != b:
             return False
     return True
@@ -106,7 +109,6 @@ def save_merged_sequences(merged_sequences_df):
     bla
     '''
     merged_sequences_df.to_csv(MERGED_S_FILE, index=False)
-    return
 
 
 if __name__ == "__main__":
