@@ -6,4 +6,7 @@ Two necessary arguments of the **rsr.py** script are **-s** and **-l**, specifyi
 
 The output merged file can be specified by the argument **-m**. Arguments **-b** and **-f** specify whether the shorter sequences should be checked from the back or from the front of the longer sequences. If neither of those two is specified, both checks are performed.
 
+Non-duplicate shorter sequences are added to the merged file, with the prefix **s_** added to their ASVNumber.
+
+
 Note that column names **ASVNumber** and **sequence** are expected in the *.csv* files
