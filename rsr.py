@@ -10,6 +10,7 @@ import getopt
 # Global options
 SHORT_S_FILE = ""
 LONG_S_FILE = ""
+MERGED_S_FILE = "Data/merged.csv"
 FORWARDS_ONLY = False
 BACKWARDS_ONLY = False
 
@@ -20,11 +21,12 @@ def parse_arguments():
     '''
     global SHORT_S_FILE
     global LONG_S_FILE
+    global MERGED_S_FILE
     global FORWARDS_ONLY
     global BACKWARDS_ONLY
 
     try:
-        arguments, _ = getopt.getopt(sys.argv[1:], "s:l:fb")
+        arguments, _ = getopt.getopt(sys.argv[1:], "s:l:m:fb")
     except getopt.GetoptError as err:
         print(err)
         sys.exit(2)
@@ -34,6 +36,8 @@ def parse_arguments():
             SHORT_S_FILE = "Data/" + value + ".csv"
         elif arg == "-l":
             LONG_S_FILE = "Data/" + value + ".csv"
+        elif arg == "-m":
+            MERGED_S_FILE = "Data/" + value  + ".csv"
         elif arg == "-f":
             FORWARDS_ONLY = True
         elif arg == "-b":
@@ -97,10 +101,17 @@ def sequences_match(shorter, longer, order=""):
     return True
 
 
+def save_merged_sequences(merged_sequences_df):
+    '''
+    bla
+    '''
+    merged_sequences_df.to_csv(MERGED_S_FILE, index=False)
+    return
+
+
 if __name__ == "__main__":
     '''
     bla
     '''
     parse_arguments()
-    merged_sequences = sequence_checker(*create_dataframes())
-    print(merged_sequences)
+    save_merged_sequences(sequence_checker(*create_dataframes()))
