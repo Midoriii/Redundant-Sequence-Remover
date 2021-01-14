@@ -31,9 +31,9 @@ def parse_arguments():
 
     for arg, value in arguments:
         if arg == "-s":
-            SHORT_S_FILE = "Data/" + value
+            SHORT_S_FILE = "Data/" + value + ".csv"
         elif arg == "-l":
-            LONG_S_FILE = "Data/" + value
+            LONG_S_FILE = "Data/" + value + ".csv"
         elif arg == "-f":
             FORWARDS_ONLY = True
         elif arg == "-b":
@@ -57,10 +57,50 @@ def create_dataframes():
     return short_sequences, long_sequences, merged_sequences
 
 
+def sequence_checker(short_sequences_df, long_sequences_df, merged_sequences_df):
+    '''
+    bla
+    '''
+    long_sequences = long_sequences_df['sequence'].tolist()
+
+    for idx, row in short_sequences_df.iterrows():
+        duplicate_found = False
+
+        for sequence in long_sequences:
+            if not BACKWARDS_ONLY:
+                if sequences_match(row['sequence'], sequence):
+                    duplicate_found = True
+                    break
+            if not FORWARDS_ONLY:
+                if sequences_match(row['sequence'], sequence, "reverse"):
+                    duplicate_found = True
+                    break
+
+        if not duplicate_found:
+            row['ASVNumber'] = "s_" + row['ASVNumber']
+            merged_sequences_df = merged_sequences_df.append(row)
+
+    return merged_sequences_df
+
+
+def sequences_match(shorter, longer, order=""):
+    '''
+    bla
+    '''
+    if order == "reverse":
+        shorter = shorter[::-1]
+        longer = longer[::-1]
+
+    for a,b in zip(shorter, longer):
+        if a != b:
+            return False
+    return True
+
+
 if __name__ == "__main__":
     '''
     bla
     '''
     parse_arguments()
-
-    short_sequences, long_sequences, merged_sequences = create_dataframes()
+    merged_sequences = sequence_checker(*create_dataframes())
+    print(merged_sequences)
