@@ -9,4 +9,7 @@ The output merged file can be specified by the argument **-m**. Arguments **-b**
 Non-duplicate shorter sequences are added to the merged file, with the prefix **s_** added to their ASVNumber.
 
 
+Usage: python rsr.py -s *path* -l *path* [-f/-b] [-m *path*]
+
+
 Note that column names **ASVNumber** and **sequence** are expected in the *.csv* files
